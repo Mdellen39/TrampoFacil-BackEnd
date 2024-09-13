@@ -1,0 +1,26 @@
+
+Criando novo projeto
+
+npx@nestjs/cli new nomeProjeto
+
+
+
+
+Caso for importar uma pasta e estiver sem a pasta nodeModules
+
+
+
+
+A ordem mais lógica para desenvolver uma API com base nas necessidades mencionadas seria a seguinte:
+
+Entity: Primeiro, defina o modelo da sua entidade, ou seja, a estrutura do objeto que será armazenado no banco de dados. A entidade representa os dados e as suas características.
+
+DTO (Data Transfer Object): Em seguida, crie o DTO para transferir os dados entre diferentes camadas da aplicação. O DTO ajuda a estruturar o que deve ser enviado ou recebido pela API.
+
+DM (Data Model): Depois, crie o Data Model, que pode ser responsável por mapear e lidar com a comunicação entre a entidade e o banco de dados, se necessário. Ele pode também definir como os dados serão manipulados ou convertidos.
+
+Controller: Após isso, implemente o Controller, que vai gerenciar as requisições HTTP (GET, POST, PUT, DELETE), utilizando as entidades e DTOs criados.
+
+Module: Por fim, agrupe tudo dentro de um módulo que vai organizar as partes da aplicação (entity, DTO, controller e DM), facilitando a manutenção e expansão do projeto.
+
+Essa sequência segue a ideia de construir primeiro os blocos essenciais e, em seguida, integrá-los com as funções de controle e organização
