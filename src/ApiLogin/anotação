@@ -24,3 +24,6 @@ Controller: Após isso, implemente o Controller, que vai gerenciar as requisiç�
 Module: Por fim, agrupe tudo dentro de um módulo que vai organizar as partes da aplicação (entity, DTO, controller e DM), facilitando a manutenção e expansão do projeto.
 
 Essa sequência segue a ideia de construir primeiro os blocos essenciais e, em seguida, integrá-los com as funções de controle e organização
+
+
+AQUI É UM TESTE 
