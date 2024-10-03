@@ -5,7 +5,7 @@ import { RetornoUsuarioDTO } from "../Dtosusuarios/retornousuario.dto";
 import { CriaGeneroDTO } from "./dto/criaGenero.dto";
 import { RetornoCadastroDTO, RetornoObjDTO } from "./dto/retorno.dto";
 import { AlteraGeneroDTO } from "./dto/atualizaGenero.dto";
-import { v4 vs uuid} from "@nestjs/common";
+import {v4  as uuid} from 'uuid'
 
 @Injectable()
 export class GeneroService {
@@ -103,8 +103,4 @@ export class GeneroService {
             },
         });
     }
-
-
-
-
 }
