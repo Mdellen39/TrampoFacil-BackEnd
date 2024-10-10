@@ -4,7 +4,7 @@
 import { Module } from '@nestjs/common';
 import { UsuarioController } from './usuario.controller';
 import { UsuariosArmazenados } from './usuario.dm'; // Verifique o caminho correto
-import { emailUnicoValidator } from './Validacaoemail.validador.ts/email-unico.validator'
+import { emailUnicoValidator } from '../Validacaoemail.validador.ts/email-unico.validator'
 
 @Module({
   controllers: [UsuarioController],

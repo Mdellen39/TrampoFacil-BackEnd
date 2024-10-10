@@ -1,7 +1,7 @@
+//classe para criação de validator e decorator para validação de email unico
 import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import { UsuariosArmazenados } from "../usuario.dm";
+import { UsuariosArmazenados } from "../usuario/usuario.dm";
 import { Injectable } from "@nestjs/common";
-
 
 @Injectable()
 @ValidatorConstraint({async:true})
@@ -14,7 +14,7 @@ export class emailUnicoValidator implements ValidatorConstraintInterface{
     async validate(value: any, validationArguments?: ValidationArguments): Promise<boolean> {
         const validarEmail = await this.Usuarios.validaEmail(value);
         return validarEmail;
-    }
+    }    
 }
 
 //export de decorator, para uso do decorator basta usar o nome "EmailUnico"

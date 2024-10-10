@@ -2,35 +2,35 @@
 //DTO é "data transfer object" ou objeto de transferencia de dados, ou seja, é um tipo de classe para transferir dados
 
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
-import { EmailUnico } from "../Validacaoemail.validador.ts/email-unico.validator";
+import { EmailUnico } from "../validacao/email-unico.validator";
 import { ApiProperty } from "@nestjs/swagger";
-import { SenhaForte } from "../Validacaoemail.validador.ts/strongpass.validador";
+import { SenhaForte } from "../validacao/strongpass.validator";
 
-export class criaUsuarioDTO {
+export class criaUsuarioDTO{
     @IsString()
-    @IsNotEmpty({ message: "nome não pode ser vazio" })
+    @IsNotEmpty({message: "nome não pode ser vazio"})
     @ApiProperty({
         example: "Joao",
         description: "Nome do usuário, deve ser informado um texto contendo o nome"
     })
     nome: string;
 
-    @EmailUnico({ message: "Email repetido" })
-    @IsEmail(undefined, { message: "email inválido" })
+    @EmailUnico({message: "Email repetido"})
+    @IsEmail(undefined, {message: "email inválido"})
     @ApiProperty({
         example: "joao@teste.com",
         description: "Email do usuário, deve ser informado um email válido e que não se repita"
     })
     email: string;
 
-    @MinLength(8, { message: "senha deve ter no minimo 8 digitos" })
+    @MinLength(8, {message: "senha deve ter no minimo 8 digitos"})
     @ApiProperty({
-        example: "senha123",
-        description: "Senha do usuário, deve ter pelo menos 6 digitos"
+        example: "Senha@444151241",
+        description: "Senha do usuário, deve ter pelo menos 8 digitos, tendo numeros, letras e caracteres especiais"
     })
-    @SenhaForte({message:"Senha deve ter complexidade maior, Esta muito fraca"})
-    senha: string;
-
+    @SenhaForte({message:"Senha deve ter complexidade maior. Está muito fraca"})
+    senha:string;
+    
     @IsNumber()
     @ApiProperty({
         example: "1990",
@@ -50,19 +50,17 @@ export class criaUsuarioDTO {
         example: "12123412349",
         description: "Telefone do usuário, deve ser informado um texto apenas com os numeros do telefone"
     })
-    
-    @IsString()
-    @IsNotEmpty({ message: "deve conter todos os digitos do seu cpf ou CNPJ" })
-    doc: string;
-    
-    @IsString()
-    @IsNotEmpty({ message: "deve conter todos os digitos do seu cpf ou CNPJ" })
     telefone: string;
+
+    
+    // @IsString()
+    // @IsNotEmpty({ message: "deve conter todos os digitos do seu cpf ou CNPJ" })
+    // doc: string;
+    
+    // @IsString()
+    // @IsNotEmpty({ message: "deve conter todos os digitos do seu cpf ou CNPJ" })
+    // telefone: string;
          
-
-
-
-
         
 }
 

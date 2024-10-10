@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { UsuarioEntity } from "./usuario.entity";
-import { alteraUsuarioDTO } from "./Dtosusuarios/AlterarUsuario.dto";
+import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
 
 
 @Injectable()

@@ -1,20 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import * as zxcvbn from 'zxcvbn'
-
+import * as zxcvbn from 'zxcvbn';
 
 @Injectable()
 @ValidatorConstraint({async:true})
-
 export class strongPassValidator implements ValidatorConstraintInterface{
-
-    async validate(value: any, validationArguments?: ValidationArguments): Promise<boolean> {
-        if (value) {
+    
+    async validate(value: string, validationArguments?: ValidationArguments): Promise<boolean> {
+        if (value){
             const result = zxcvbn(value);
-        var validarSenha = (result.score <= 2);
-    }
-    return !validarSenha;
-    }
+            var validarSenha = (result.score <= 2) ;
+        }
+        return !validarSenha;
+    }    
 }
 
 export const SenhaForte = (opcaoValidacao: ValidationOptions)=>{
