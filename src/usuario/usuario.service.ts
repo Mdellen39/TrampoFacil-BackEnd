@@ -13,7 +13,6 @@ export class UsuariosArmazenados{
         this.#usuarios.push(usuario);
     }
 
-
     //função resposável por pesquisar usuários que tenham o email especificado 
     pesquisaEmail(email:string){
 
