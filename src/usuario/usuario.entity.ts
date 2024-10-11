@@ -40,5 +40,4 @@ export class UsuarioEntity{
         return bcrypt.compareSync(senha,this.senha);
     }
 
-
 }
