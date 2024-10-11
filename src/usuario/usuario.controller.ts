@@ -145,8 +145,6 @@ export class UsuarioController{
         );
 
         const retorno = new ListagemUsuariosDTO(ListaRetorno);
-
-
         return retorno
     }
 }
