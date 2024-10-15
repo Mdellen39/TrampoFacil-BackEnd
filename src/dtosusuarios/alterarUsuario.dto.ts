@@ -1,9 +1,9 @@
 //classe responsável por definir padrão para alteração de usuários
 //DTO é "data transfer object" ou objeto de transferencia de dados, ou seja, é um tipo de classe para transferir dados
 import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
-import { EmailUnico } from "../validacao/email-unico.validator";
+import { EmailUnico } from "../Validacaoemail.validador.ts/email-unico.validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { SenhaForte } from "../validacao/strongpass.validator";
+import { SenhaForte } from "../Validacaoemail.validador.ts/strongpass.validador";
 
 export class alteraUsuarioDTO{
 

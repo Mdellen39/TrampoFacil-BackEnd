@@ -3,12 +3,12 @@
 
 import { Module } from '@nestjs/common';
 import { UsuarioController } from './usuario.controller';
-import { UsuariosArmazenados } from './usuario.dm'; // Verifique o caminho correto
+import { UsuarioService } from './usuario.service'; // Verifique o caminho correto
 import { emailUnicoValidator } from '../Validacaoemail.validador.ts/email-unico.validator'
 
 @Module({
   controllers: [UsuarioController],
-  providers: [UsuariosArmazenados, emailUnicoValidator],
-  exports: [UsuariosArmazenados], // Se necessário, exporte para uso em outros módulos
+  providers: [UsuarioService, emailUnicoValidator],
+  exports: [UsuarioService], // Se necessário, exporte para uso em outros módulos
 })
 export class UsuarioModule {}

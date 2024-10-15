@@ -3,10 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsuarioEntity } from "./usuario.entity";
 import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
+import { criaUsuarioDTO } from "src/dtosusuarios/criarUsuario.dto";
 
 @Injectable()
 export class UsuarioService {
-  alterar(id: string, dados: AlteraUsuarioDTO): any {
+  alterar(id: string, dados: alteraUsuarioDTO): any {
       throw new Error("Method not implemented.");
   }
   remover(id: string): any {
@@ -15,7 +16,7 @@ export class UsuarioService {
   localizarID(id: string): UsuarioEntity | PromiseLike<UsuarioEntity> {
       throw new Error("Method not implemented.");
   }
-  inserir(dados: CriaUsuarioDTO): any {
+  inserir(dados: criaUsuarioDTO): any {
       throw new Error("Method not implemented.");
   }
   listar(): UsuarioEntity[] | PromiseLike<UsuarioEntity[]> {

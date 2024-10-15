@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { RetornoCadastroDTO, RetornoObjDTO } from "src/dto/retorno.dto";
+import { RetornoCadastroDTO, RetornoObjDTO } from "../dtosusuarios/retornoUsuario.dto";
 import { UsuarioService } from "./usuario.service";
 import { UsuarioEntity } from "./usuario.entity";
-import { CriaUsuarioDTO } from "../dtosusuarios/criarUsuario.dto";
-import { AlteraUsuarioDTO } from "./dto/alteraUsuario.dto";
+import { criaUsuarioDTO } from "../dtosusuarios/criarUsuario.dto";
+import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
 import { ApiTags, ApiResponse } from "@nestjs/swagger";
 
 @ApiTags('usuario')
@@ -19,14 +19,14 @@ export class UsuarioController {
     @Post('')
     @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.' })
     @ApiResponse({ status: 400, description: 'Dados inválidos.' })
-    async criaUsuario(@Body() dados: CriaUsuarioDTO): Promise<RetornoCadastroDTO> {
+    async criaUsuario(@Body() dados: criaUsuarioDTO): Promise<RetornoCadastroDTO> {
         return this.usuarioService.inserir(dados);
     }
 
     @Put(':id')
     @ApiResponse({ status: 200, description: 'Usuário alterado com sucesso.' })
     @ApiResponse({ status: 400, description: 'Dados inválidos ou usuário não encontrado.' })
-    async alterarUsuario(@Body() dados: AlteraUsuarioDTO, @Param('id') id: string): Promise<RetornoCadastroDTO> {
+    async alterarUsuario(@Body() dados: alteraUsuarioDTO, @Param('id') id: string): Promise<RetornoCadastroDTO> {
         return this.usuarioService.alterar(id, dados);
     }
 
