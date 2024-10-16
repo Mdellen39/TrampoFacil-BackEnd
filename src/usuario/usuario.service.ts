@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UsuarioEntity } from "./usuario.entity";
+import { USUARIO } from "./usuario.entity";
 import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
 import { criaUsuarioDTO } from "src/dtosusuarios/criarUsuario.dto";
 
@@ -13,32 +13,32 @@ export class UsuarioService {
   remover(id: string): any {
       throw new Error("Method not implemented.");
   }
-  localizarID(id: string): UsuarioEntity | PromiseLike<UsuarioEntity> {
+  localizarID(id: string): USUARIO | PromiseLike<USUARIO> {
       throw new Error("Method not implemented.");
   }
   inserir(dados: criaUsuarioDTO): any {
       throw new Error("Method not implemented.");
   }
-  listar(): UsuarioEntity[] | PromiseLike<UsuarioEntity[]> {
+  listar(): USUARIO[] | PromiseLike<USUARIO[]> {
       throw new Error("Method not implemented.");
   }
   constructor(
-    @InjectRepository(UsuarioEntity)
-    private usuarioRepository: Repository<UsuarioEntity>,
+    @InjectRepository(USUARIO)
+    private usuarioRepository: Repository<USUARIO>,
   ) {}
 
   // Adcionar usuário no banco de dados
-  async AdicionarUsuario(usuario: UsuarioEntity): Promise<UsuarioEntity> {
+  async AdicionarUsuario(usuario: USUARIO): Promise<USUARIO> {
     return await this.usuarioRepository.save(usuario);
   }
 
   // Função para pesquisar usuário pelo email
-  async pesquisaEmail(email: string): Promise<UsuarioEntity | undefined> {
+  async pesquisaEmail(email: string): Promise<USUARIO | undefined> {
     return await this.usuarioRepository.findOne({ where: { email } });
   }
 
   // Função para pesquisar usuário pelo ID
-  async pesquisaId(id: string): Promise<UsuarioEntity> {
+  async pesquisaId(id: string): Promise<USUARIO> {
     const possivelUsuario = await this.usuarioRepository.findOne({ where: { id } });
     if (!possivelUsuario) {
       throw new Error('Usuário não encontrado');
@@ -47,7 +47,7 @@ export class UsuarioService {
   }
 
   // Função para alterar os dados de um usuário existente
-  async alteraUsuario(id: string, dadosNovos: alteraUsuarioDTO): Promise<UsuarioEntity> {
+  async alteraUsuario(id: string, dadosNovos: alteraUsuarioDTO): Promise<USUARIO> {
     const usuario = await this.pesquisaId(id);
 
     // Atualizar apenas os campos permitidos, exceto o ID
@@ -70,7 +70,7 @@ export class UsuarioService {
   }
 
   // Função para realizar o login
-  async Login(email: string, senha: string): Promise<{ usuario: UsuarioEntity | null, status: boolean }> {
+  async Login(email: string, senha: string): Promise<{ usuario: USUARIO | null, status: boolean }> {
     const possivelUsuario = await this.pesquisaEmail(email);
 
     if (possivelUsuario) {
@@ -88,14 +88,14 @@ export class UsuarioService {
   }
 
   // Função para remover um usuário
-  async removeUsuario(id: string): Promise<UsuarioEntity> {
+  async removeUsuario(id: string): Promise<USUARIO> {
     const usuario = await this.pesquisaId(id);
     await this.usuarioRepository.delete(id);
     return usuario;
   }
 
   // Função para retornar todos os usuários
-  async getUsuarios(): Promise<UsuarioEntity[]> {
+  async getUsuarios(): Promise<USUARIO[]> {
     return await this.usuarioRepository.find();
   }
 }
@@ -151,17 +151,17 @@ export class UsuarioService {
 
 
 // import { Injectable } from "@nestjs/common";
-// import { UsuarioEntity } from "./usuario.entity";
+// import { USUARIO } from "./usuario.entity";
 // import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
 
 
 // @Injectable()
 // export class UsuariosArmazenados{
 //     //Criação de vetor para armazenar os usuários (apenas em memoria, quando reiniciar a API perde tudo)
-//     #usuarios: UsuarioEntity[] = [];  
+//     #usuarios: USUARIO[] = [];  
 
 //     //funçaço responsável por guardar o usuário no vetor
-//     AdicionarUsuario(usuario: UsuarioEntity){
+//     AdicionarUsuario(usuario: USUARIO){
 //         this.#usuarios.push(usuario);
 //     }
 

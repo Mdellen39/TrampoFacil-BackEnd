@@ -5,10 +5,28 @@ import { Module } from '@nestjs/common';
 import { UsuarioController } from './usuario.controller';
 import { UsuarioService } from './usuario.service'; // Verifique o caminho correto
 import { emailUnicoValidator } from '../Validacaoemail.validador.ts/email-unico.validator'
+import { DatabaseModule } from 'src/database/database.module';
+import { usuarioProviders } from './usuario.providers';
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [UsuarioController],
-  providers: [UsuarioService, emailUnicoValidator],
-  exports: [UsuarioService], // Se necessário, exporte para uso em outros módulos
+  providers: [...usuarioProviders,
+    UsuarioService,
+  ],
+
 })
 export class UsuarioModule {}
+
+
+
+// @Module({  
+//   imports: [DatabaseModule],
+//   controllers: [FilmeController],  
+//   providers: [...filmeProviders,
+//     FilmeService,
+//     ...generoProviders,
+//     GeneroService,
+//   ],
+// })
+// export class FilmeModule {}

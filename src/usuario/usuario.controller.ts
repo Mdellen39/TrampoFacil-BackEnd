@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { RetornoCadastroDTO, RetornoObjDTO } from "../dtosusuarios/retornoUsuario.dto";
 import { UsuarioService } from "./usuario.service";
-import { UsuarioEntity } from "./usuario.entity";
+import { USUARIO } from "./usuario.entity";
 import { criaUsuarioDTO } from "../dtosusuarios/criarUsuario.dto";
 import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
 import { ApiTags, ApiResponse } from "@nestjs/swagger";
+import { RetornoCadastroDTO, RetornoObjDTO } from "src/dto/retorno.dto";
 
 @ApiTags('usuario')
 @Controller('/usuario')
@@ -12,7 +12,7 @@ export class UsuarioController {
     constructor(private readonly usuarioService: UsuarioService) {} // Correção aqui
 
     @Get('')
-    async listar(): Promise<UsuarioEntity[]> {
+    async listar(): Promise<USUARIO[]> {
         return this.usuarioService.listar();
     }
 
@@ -33,7 +33,7 @@ export class UsuarioController {
     @Get(':id') // Alterado para simplificar
     @ApiResponse({ status: 200, description: 'Usuário encontrado.' })
     @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
-    async listarPorID(@Param('id') id: string): Promise<UsuarioEntity> {
+    async listarPorID(@Param('id') id: string): Promise<USUARIO> {
         return this.usuarioService.localizarID(id);
     }
 
@@ -53,7 +53,7 @@ export class UsuarioController {
 
 // import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 // import { criaUsuarioDTO } from "./dto/usuario.dto";
-// import { UsuarioEntity } from "./usuario.entity";
+// import { USUARIO } from "./usuario.entity";
 // import {v4  as uuid} from 'uuid'
 // import { UsuariosArmazenados } from "./usuario.dm";
 // import { RetornoUsuarioDTO } from "./dto/retornoUsuario.dto";
@@ -87,7 +87,7 @@ export class UsuarioController {
 //     @ApiResponse({status: 400, description:'Retorna que há algum dado inválido na requisição.'})
 //     async criaUsuario(@Body() dadosUsuario: criaUsuarioDTO): Promise <RetornoUsuarioDTO>{       
 //         //criação do objeto de usuário, aqui é criado um objeto específico desse usuário 
-//         var novoUsuario = new UsuarioEntity(uuid(), dadosUsuario.nome, dadosUsuario.idade, 
+//         var novoUsuario = new USUARIO(uuid(), dadosUsuario.nome, dadosUsuario.idade, 
 //                                             dadosUsuario.cidade, dadosUsuario.email,
 //                                             dadosUsuario.telefone,this.objDatas.dataAtual(), dadosUsuario.senha
 //         )
