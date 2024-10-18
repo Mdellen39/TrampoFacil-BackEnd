@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { USUARIO } from "./usuario.entity";
@@ -7,6 +7,11 @@ import { criaUsuarioDTO } from "src/dtosusuarios/criarUsuario.dto";
 
 @Injectable()
 export class UsuarioService {
+  constructor(
+    @Inject('USUARIO_REPOSITORY')
+    private usuarioRepository: Repository<USUARIO>,
+  ) {}
+
   alterar(id: string, dados: alteraUsuarioDTO): any {
       throw new Error("Method not implemented.");
   }
@@ -22,10 +27,7 @@ export class UsuarioService {
   listar(): USUARIO[] | PromiseLike<USUARIO[]> {
       throw new Error("Method not implemented.");
   }
-  constructor(
-    @InjectRepository(USUARIO)
-    private usuarioRepository: Repository<USUARIO>,
-  ) {}
+  
 
   // Adcionar usuário no banco de dados
   async AdicionarUsuario(usuario: USUARIO): Promise<USUARIO> {

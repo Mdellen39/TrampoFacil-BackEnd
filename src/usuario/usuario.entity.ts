@@ -31,18 +31,18 @@ export class USUARIO {
     doc: string;
 
     // conforme estava nos codigos anteriores
-    constructor(id: string, nome: string, idade: number, cidade: string, email: string, telefone: string, senha: string, doc: string) {
-        const saltOrRounds = 10;
-        this.id = id;
-        this.nome = nome;
-        this.idade = idade;
-        this.cidade = cidade;
-        this.email = email;
-        this.telefone = telefone;
-        // senha criptografada modelo 
-        this.senha = bcrypt.hashSync(senha, saltOrRounds);
-        this.doc = doc;
-    }
+    // constructor(id: string, nome: string, idade: number, cidade: string, email: string, telefone: string, senha: string, doc: string) {
+    //     const saltOrRounds = 10;
+    //     this.id = id;
+    //     this.nome = nome;
+    //     this.idade = idade;
+    //     this.cidade = cidade;
+    //     this.email = email;
+    //     this.telefone = telefone;
+    //     // senha criptografada modelo 
+    //     this.senha = bcrypt.hashSync(senha, saltOrRounds);
+    //     this.doc = doc;
+    // }
 
     // conforme estava nos codigos anteriores, metodo para trocar a senha
     trocaSenha(novaSenha: string) {
