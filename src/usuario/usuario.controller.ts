@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { UsuarioService } from "./usuario.service";
+import { USUARIOService } from "./usuario.service";
 import { USUARIO } from "./usuario.entity";
 import { criaUsuarioDTO } from "../dtosusuarios/criarUsuario.dto";
 import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
@@ -9,7 +9,7 @@ import { RetornoCadastroDTO, RetornoObjDTO } from "src/dto/retorno.dto";
 @ApiTags('usuario')
 @Controller('/usuario')
 export class UsuarioController {
-    constructor(private readonly usuarioService: UsuarioService) {} // Correção aqui
+    constructor(private readonly usuarioService: USUARIOService) {} // Correção aqui
 
     @Get('')
     async listar(): Promise<USUARIO[]> {

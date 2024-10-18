@@ -10,7 +10,8 @@ export default class Datas{
     }
 
     diferencaDias(data: Date){
-       
+    //    var Data = 
+
         var diff = data.getTime() - this.dataAtual().getTime();   
     
         var daydiff = diff / (1000 * 60 * 60 * 24);   

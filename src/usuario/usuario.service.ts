@@ -1,106 +1,298 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { USUARIO } from "./usuario.entity";
-import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
-import { criaUsuarioDTO } from "src/dtosusuarios/criarUsuario.dto";
+import { v4 as uuid } from 'uuid';
+import { RetornoCadastroDTO, RetornoObjDTO } from 'src/dto/retorno.dto';
+import { USUARIO } from './usuario.entity';
+import { criaUsuarioDTO } from '../dtosusuarios/criarUsuario.dto';
+import { alteraUsuarioDTO } from '../dtosusuarios/alterarUsuario.dto';
+import Datas from 'src/utilidades/data';
+
 
 @Injectable()
-export class UsuarioService {
+export class USUARIOService {
+  objDatas: Datas;
   constructor(
     @Inject('USUARIO_REPOSITORY')
     private usuarioRepository: Repository<USUARIO>,
-  ) {}
-
-  alterar(id: string, dados: alteraUsuarioDTO): any {
-      throw new Error("Method not implemented.");
-  }
-  remover(id: string): any {
-      throw new Error("Method not implemented.");
-  }
-  localizarID(id: string): USUARIO | PromiseLike<USUARIO> {
-      throw new Error("Method not implemented.");
-  }
-  inserir(dados: criaUsuarioDTO): any {
-      throw new Error("Method not implemented.");
-  }
-  listar(): USUARIO[] | PromiseLike<USUARIO[]> {
-      throw new Error("Method not implemented.");
-  }
-  
-
-  // Adcionar usuário no banco de dados
-  async AdicionarUsuario(usuario: USUARIO): Promise<USUARIO> {
-    return await this.usuarioRepository.save(usuario);
+  ) {
+    this.objDatas = new Datas();
   }
 
-  // Função para pesquisar usuário pelo email
-  async pesquisaEmail(email: string): Promise<USUARIO | undefined> {
-    return await this.usuarioRepository.findOne({ where: { email } });
+  async listar(): Promise<any[]> {
+    var usuarios = await this.usuarioRepository
+      .createQueryBuilder('usuario')
+      .select('usuario.ID', 'ID')
+      .addSelect('usuario.foto', 'FOTO')
+      .addSelect('usuario.email', 'EMAIL')
+      .getRawMany();
+    return usuarios;
   }
 
-  // Função para pesquisar usuário pelo ID
-  async pesquisaId(id: string): Promise<USUARIO> {
-    const possivelUsuario = await this.usuarioRepository.findOne({ where: { id } });
-    if (!possivelUsuario) {
-      throw new Error('Usuário não encontrado');
-    }
-    return possivelUsuario;
-  }
-
-  // Função para alterar os dados de um usuário existente
-  async alteraUsuario(id: string, dadosNovos: alteraUsuarioDTO): Promise<USUARIO> {
-    const usuario = await this.pesquisaId(id);
-
-    // Atualizar apenas os campos permitidos, exceto o ID
-    Object.entries(dadosNovos).forEach(([chave, valor]) => {
-      if (chave === 'id') return;
-      if (chave === 'senha') {
-        usuario.trocaSenha(valor);
-      } else {
-        (usuario as any)[chave] = valor;
-      }
-    });
-
-    return await this.usuarioRepository.save(usuario);
-  }
-
-  // Validação para verificar se o email já existe
-  async validaEmail(emailNovo: string): Promise<boolean> {
-    const possivelUsuario = await this.pesquisaEmail(emailNovo);
-    return possivelUsuario === undefined;
-  }
-
-  // Função para realizar o login
-  async Login(email: string, senha: string): Promise<{ usuario: USUARIO | null, status: boolean }> {
-    const possivelUsuario = await this.pesquisaEmail(email);
-
-    if (possivelUsuario) {
-      const isSenhaCorreta = possivelUsuario.login(senha);
-      return {
-        usuario: isSenhaCorreta ? possivelUsuario : null,
-        status: isSenhaCorreta,
-      };
-    } else {
-      return {
-        usuario: null,
-        status: false,
-      };
-    }
-  }
-
-  // Função para remover um usuário
-  async removeUsuario(id: string): Promise<USUARIO> {
-    const usuario = await this.pesquisaId(id);
-    await this.usuarioRepository.delete(id);
+  async listarID(ID: string): Promise<any> {
+    var usuario = await this.usuarioRepository
+      .createQueryBuilder('usuario')
+      .select('usuario.ID', 'ID')
+      .addSelect('usuario.email', 'EMAIL')
+      .addSelect('usuario.foto', 'FOTO')
+      .andWhere('usuario.ID = :ID', { ID: `${ID}` })
+      .getRawOne();
     return usuario;
   }
 
-  // Função para retornar todos os usuários
-  async getUsuarios(): Promise<USUARIO[]> {
-    return await this.usuarioRepository.find();
+  async adicionaAssinatura(id: string, dias: number) {
+    const usuario = await this.localizarID(id);
+
+    usuario.ASSINATURA = this.objDatas.adicionarDias(usuario.ASSINATURA, dias);
+    return this.usuarioRepository.save(usuario)
+      .then((result) => {
+        return <RetornoCadastroDTO>{
+          id: usuario.ID,
+          message: "USUARIO alterado!"
+        };
+      })
+      .catch((error) => {
+        return <RetornoCadastroDTO>{
+          id: "",
+          message: "Houve um erro ao alterar." + error.message
+        };
+      });
+  }
+
+  async inserir(dados: criaUsuarioDTO): Promise<RetornoCadastroDTO> {
+    let usuario = new USUARIO();
+    usuario.ID = uuid();
+
+    usuario.CIDADE = dados.CIDADE;
+    usuario.EMAIL = dados.EMAIL;
+    usuario.trocaSenha(dados.SENHA);
+    usuario.TELEFONE = dados.TELEFONE;
+    usuario.ASSINATURA = this.objDatas.dataAtual();
+    usuario.FOTO = dados.FOTO;
+
+    return this.usuarioRepository.save(usuario)
+      .then((result) => {
+        return <RetornoCadastroDTO>{
+          id: usuario.ID,
+          message: "USUARIO cadastrado!"
+        };
+      })
+      .catch((error) => {
+        return <RetornoCadastroDTO>{
+          id: "",
+          message: "Houve um erro ao cadastrar." + error.message
+        };
+      });
+  }
+
+  async localizarID(ID: string): Promise<USUARIO> {
+    return this.usuarioRepository.findOne({
+      where: {
+        ID,
+      },
+    });
+  }
+
+  async retornaAssinatura(ID: string) {
+    var usuario = await this.localizarID(ID);
+
+    var diferenca = this.objDatas.diferencaDias(usuario.ASSINATURA);
+
+    return {
+      validadeAssinatura: diferenca
+    };
+  }
+
+  async localizarEmail(EMAIL: string): Promise<USUARIO> {
+    return this.usuarioRepository.findOne({
+      where: {
+        EMAIL,
+      },
+    });
+  }
+
+  async Login(email: string, senha: string) {
+    const possivelUsuario = await this.localizarEmail(email);
+
+    return {
+      usuario: possivelUsuario ? (possivelUsuario.login(senha) ? possivelUsuario : null) : null,
+      status: possivelUsuario ? possivelUsuario.login(senha) : false
+    };
+  }
+
+  async validaEmail(emailNovo: string) {
+    const possivelUsuario = await this.localizarEmail(emailNovo);
+
+    return (possivelUsuario == null);
+  }
+
+  async remover(id: string): Promise<RetornoObjDTO> {
+    const usuario = await this.localizarID(id);
+
+    return this.usuarioRepository.remove(usuario)
+      .then((result) => {
+        return <RetornoObjDTO>{
+          return: usuario,
+          message: "USUARIO excluido!"
+        };
+      })
+      .catch((error) => {
+        return <RetornoObjDTO>{
+          return: usuario,
+          message: "Houve um erro ao excluir." + error.message
+        };
+      });
+  }
+
+  async alterar(id: string, dados: alteraUsuarioDTO): Promise<RetornoCadastroDTO> {
+    const usuario = await this.localizarID(id);
+
+    Object.entries(dados).forEach(
+      ([chave, valor]) => {
+        if (chave === 'ID') {
+          return;
+        } else {
+          usuario[chave] = valor;
+        }
+      }
+    );
+
+    return this.usuarioRepository.save(usuario)
+      .then((result) => {
+        return <RetornoCadastroDTO>{
+          id: usuario.ID,
+          message: "USUARIO alterado!"
+        };
+      })
+      .catch((error) => {
+        return <RetornoCadastroDTO>{
+          id: "",
+          message: "Houve um erro ao alterar." + error.message
+        };
+      });
   }
 }
+
+
+
+
+
+
+
+
+// import { Inject, Injectable } from "@nestjs/common";
+// import { InjectRepository } from '@nestjs/typeorm';
+// import { Repository } from 'typeorm';
+// import { USUARIO } from "./usuario.entity";
+// import { alteraUsuarioDTO } from "../dtosusuarios/alterarUsuario.dto";
+// import { criaUsuarioDTO } from "src/dtosusuarios/criarUsuario.dto";
+// import Datas from "src/utilidades/data";
+
+// @Injectable()
+// // export class UsuarioService {
+// //   constructor(
+// //     @Inject('USUARIO_REPOSITORY')
+// //     private usuarioRepository: Repository<USUARIO>,
+// //   ) {}
+
+// //   alterar(id: string, dados: alteraUsuarioDTO): any {
+// //       throw new Error("Method not implemented.");
+// //   }
+// //   remover(id: string): any {
+// //       throw new Error("Method not implemented.");
+// //   }
+// //   localizarID(id: string): USUARIO | PromiseLike<USUARIO> {
+// //       throw new Error("Method not implemented.");
+// //   }
+// //   inserir(dados: criaUsuarioDTO): any {
+// //       throw new Error("Method not implemented.");
+// //   }
+// //   listar(): USUARIO[] | PromiseLike<USUARIO[]> {
+// //       throw new Error("Method not implemented.");
+// //   }
+
+// @Injectable()
+// export class USUARIOService {
+//   objDatas: Datas;
+//   constructor(
+//     @Inject('USUARIO_REPOSITORY')
+//     private usuarioRepository: Repository<USUARIO>,
+//   ) {
+//     this.objDatas = new Datas();
+//   }
+  
+
+//   // Adcionar usuário no banco de dados
+//   async AdicionarUsuario(usuario: USUARIO): Promise<USUARIO> {
+//     return await this.usuarioRepository.save(usuario);
+//   }
+
+//   // Função para pesquisar usuário pelo email
+//   async pesquisaEmail(email: string): Promise<USUARIO | undefined> {
+//     return await this.usuarioRepository.findOne({ where: { email } });
+//   }
+
+//   // Função para pesquisar usuário pelo ID
+//   async pesquisaId(id: string): Promise<USUARIO> {
+//     const possivelUsuario = await this.usuarioRepository.findOne({ where: { id } });
+//     if (!possivelUsuario) {
+//       throw new Error('Usuário não encontrado');
+//     }
+//     return possivelUsuario;
+//   }
+
+//   // Função para alterar os dados de um usuário existente
+//   async alteraUsuario(id: string, dadosNovos: alteraUsuarioDTO): Promise<USUARIO> {
+//     const usuario = await this.pesquisaId(id);
+
+//     // Atualizar apenas os campos permitidos, exceto o ID
+//     Object.entries(dadosNovos).forEach(([chave, valor]) => {
+//       if (chave === 'id') return;
+//       if (chave === 'senha') {
+//         usuario.trocaSenha(valor);
+//       } else {
+//         (usuario as any)[chave] = valor;
+//       }
+//     });
+
+//     return await this.usuarioRepository.save(usuario);
+//   }
+
+//   // Validação para verificar se o email já existe
+//   async validaEmail(emailNovo: string): Promise<boolean> {
+//     const possivelUsuario = await this.pesquisaEmail(emailNovo);
+//     return possivelUsuario === undefined;
+//   }
+
+//   // Função para realizar o login
+//   async Login(email: string, senha: string): Promise<{ usuario: USUARIO | null, status: boolean }> {
+//     const possivelUsuario = await this.pesquisaEmail(email);
+
+//     if (possivelUsuario) {
+//       const isSenhaCorreta = possivelUsuario.login(senha);
+//       return {
+//         usuario: isSenhaCorreta ? possivelUsuario : null,
+//         status: isSenhaCorreta,
+//       };
+//     } else {
+//       return {
+//         usuario: null,
+//         status: false,
+//       };
+//     }
+//   }
+
+//   // Função para remover um usuário
+//   async removeUsuario(id: string): Promise<USUARIO> {
+//     const usuario = await this.pesquisaId(id);
+//     await this.usuarioRepository.delete(id);
+//     return usuario;
+//   }
+
+//   // Função para retornar todos os usuários
+//   async getUsuarios(): Promise<USUARIO[]> {
+//     return await this.usuarioRepository.find();
+//   }
+// }
 
 
 
