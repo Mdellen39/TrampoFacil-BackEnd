@@ -18,7 +18,7 @@ export class USUARIO {
     @Column({ length: 255 })
     cidade: string;
 
-    @Column({length: 255 })
+    @Column({ length: 255 })
     email: string;
 
     @Column({ length: 15 })
@@ -28,13 +28,13 @@ export class USUARIO {
     senha: string;
 
     @Column({ length: 14 })
-    doc: string;
-  ASSINATURA: Date;
-  ID: any;
-  CIDADE: any;
-  EMAIL: any;
-  TELEFONE: any;
-  FOTO: any;
+    DOC: string;
+    ASSINATURA: Date;
+    ID: any;
+    CIDADE: any;
+    EMAIL: any;
+    TELEFONE: any;
+    FOTO: any;
 
     // conforme estava nos codigos anteriores
     // constructor(id: string, nome: string, idade: number, cidade: string, email: string, telefone: string, senha: string, doc: string) {
@@ -114,7 +114,7 @@ export class USUARIO {
 //     constructor(id: string,nome: string,idade: number,cidade: string,email: string,
 //                     telefone: string,senha: string, doc: string){
 //                     const saltOrRounds = 10;
-//                     //aqui a gente defini quantos pulos de codigo ele vai pular, 
+//                     //aqui a gente defini quantos pulos de codigo ele vai pular,
 //         this.id = id;
 //         this.nome = nome;
 //         this.idade = idade;
@@ -162,7 +162,7 @@ export class USUARIO {
 //     PAIS: string;
 
 //     @ManyToMany(
-//       () => FILME, 
+//       () => FILME,
 //       filme => filme.atores, //optional
 //       {onDelete: 'NO ACTION', onUpdate: 'NO ACTION'})
 //       @JoinTable({
