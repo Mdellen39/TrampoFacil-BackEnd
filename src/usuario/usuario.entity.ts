@@ -2,10 +2,9 @@
 import * as bcrypt from 'bcrypt';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-// preciso de ajuda do professor
-
 @Entity()
 export class USUARIO {
+    
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -29,12 +28,15 @@ export class USUARIO {
 
     @Column({ length: 14 })
     DOC: string;
+
     ASSINATURA: Date;
     ID: any;
     CIDADE: any;
     EMAIL: any;
     TELEFONE: any;
     FOTO: any;
+}
+
 
     // conforme estava nos codigos anteriores
     // constructor(id: string, nome: string, idade: number, cidade: string, email: string, telefone: string, senha: string, doc: string) {

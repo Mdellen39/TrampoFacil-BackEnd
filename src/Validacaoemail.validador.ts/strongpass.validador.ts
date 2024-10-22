@@ -3,30 +3,36 @@ import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorCon
 import * as zxcvbn from 'zxcvbn';
 
 @Injectable()
-@ValidatorConstraint({async:true})
-export class strongPassValidator implements ValidatorConstraintInterface{
+@ValidatorConstraint({ async: true })
+export class StrongPassValidator implements ValidatorConstraintInterface {
     
+    private readonly MIN_SCORE = 3; // Aqui define a pontuação mínima
+
     async validate(value: string, validationArguments?: ValidationArguments): Promise<boolean> {
-        if (value){
-            const result = zxcvbn(value);
-            var validarSenha = (result.score <= 2) ;
-        }
-        return !validarSenha;
+        if (!value) return false; // Mostrar (Sua seha vazia é invalida) 
+
+        const result = zxcvbn(value);
+        return result.score >= this.MIN_SCORE; // Retorna true se a senha for forte
     }    
 }
 
-export const SenhaForte = (opcaoValidacao: ValidationOptions)=>{
+/**
+  Decorador para validar se a senha é forte.
+ 
+  @param opcaoValidacao 
+  
+ */
+export const SenhaForte = (opcaoValidacao: ValidationOptions) => {
     return (objeto: Object, propriedade: string) => {
         registerDecorator({
             target: objeto.constructor,
             propertyName: propriedade,
             options: opcaoValidacao,
             constraints: [],
-            validator: strongPassValidator,
-        })
+            validator: StrongPassValidator,
+        });
     }
 }
-
 
 
 
