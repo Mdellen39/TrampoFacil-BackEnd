@@ -6,61 +6,45 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class USUARIO {
     
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    ID: string;
 
     @Column({ length: 255 })
-    nome: string;
+    NOME: string;
 
     @Column()
-    idade: number;
+    IDADE: number;
 
     @Column({ length: 255 })
-    cidade: string;
+    CIDADE: string;
 
     @Column({ length: 255 })
-    email: string;
+    EMAIL: string;
 
     @Column({ length: 15 })
-    telefone: string;
+    TELEFONE: string;
 
     @Column()
-    senha: string;
+    SENHA: string;
 
     @Column({ length: 14 })
     DOC: string;
-
     ASSINATURA: Date;
-    ID: any;
-    CIDADE: any;
-    EMAIL: any;
-    TELEFONE: any;
     FOTO: any;
-}
 
 
-    // conforme estava nos codigos anteriores
-    // constructor(id: string, nome: string, idade: number, cidade: string, email: string, telefone: string, senha: string, doc: string) {
-    //     const saltOrRounds = 10;
-    //     this.id = id;
-    //     this.nome = nome;
-    //     this.idade = idade;
-    //     this.cidade = cidade;
-    //     this.email = email;
-    //     this.telefone = telefone;
-    //     // senha criptografada modelo 
-    //     this.senha = bcrypt.hashSync(senha, saltOrRounds);
-    //     this.doc = doc;
-    // }
+
 
     // conforme estava nos codigos anteriores, metodo para trocar a senha
     trocaSenha(novaSenha: string) {
-        const saltOrRounds = 10;
-        this.senha = bcrypt.hashSync(novaSenha, saltOrRounds);
+        // const saltOrRounds = 10;
+        // this.senha = bcrypt.hashSync(novaSenha, saltOrRounds);
+        this.SENHA = novaSenha;
     }
 
     // conforme estava nos codigos anteriores, metodo de login para trocar a senha
     login(senha: string) {
-        return bcrypt.compareSync(senha, this.senha);
+        // return bcrypt.compareSync(senha, this.senha);
+        return senha == this.SENHA
     }
 }
 

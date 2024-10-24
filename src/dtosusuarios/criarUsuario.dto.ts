@@ -51,10 +51,7 @@ export class criaUsuarioDTO{
         description: "Telefone do usuário, deve ser informado um texto apenas com os numeros do telefone"
     })
     telefone: string;
-  CIDADE: any;
-  EMAIL: any;
-  SENHA: string;
-  TELEFONE: any;
+  DOC: string;
   FOTO: any;
 
     

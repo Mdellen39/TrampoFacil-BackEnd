@@ -62,12 +62,16 @@ export class USUARIOService {
     let usuario = new USUARIO();
     usuario.ID = uuid();
 
-    usuario.CIDADE = dados.CIDADE;
-    usuario.EMAIL = dados.EMAIL;
-    usuario.trocaSenha(dados.SENHA);
-    usuario.TELEFONE = dados.TELEFONE;
+    usuario.NOME = dados.nome;
+    usuario.IDADE = dados.idade;
+    usuario.CIDADE = dados.cidade;
+    usuario.EMAIL = dados.email;
+    usuario.TELEFONE = dados.telefone;
+    // usuario.trocaSenha(dados.senha);
+    usuario.DOC = dados.DOC;
     usuario.ASSINATURA = this.objDatas.dataAtual();
     usuario.FOTO = dados.FOTO;
+
 
     return this.usuarioRepository.save(usuario)
       .then((result) => {
